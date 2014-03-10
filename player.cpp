@@ -1,6 +1,5 @@
 #include "player.h"
 #include <vector>
-#include <random>
 #include <cstdlib>
 
 //Hi! I really hope this works. Okay bye. :)
@@ -73,6 +72,7 @@ Move *Player::doMove(Move *opponentsMove, int msLeft) {
 	 } 
 	 int move = moves[rand() % moves.size()];
 	 Move * output_move = new Move(move / 8, move % 8);
-	 return output_move;	 
-			  
+	 //return output_move;	 
+	 board->doMove(output_move, side);
+	 return output_move;
 }
