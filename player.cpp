@@ -70,6 +70,10 @@ Move *Player::doMove(Move *opponentsMove, int msLeft) {
 		 //delete move;
 		 }
 	 } 
+	 int value = board->count(side) - board->count((side == BLACK ? WHITE : BLACK));
+	 if 
+	 
+	 
 	 int move = moves[rand() % moves.size()];
 	 Move * output_move = new Move(move / 8, move % 8);
 	 //return output_move;	 
