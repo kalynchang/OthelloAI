@@ -1,4 +1,7 @@
 #include "player.h"
+#include <vector>
+#include <random>
+#include <cstdlib>
 
 //Hi! I really hope this works. Okay bye. :)
 
@@ -19,12 +22,15 @@ Player::Player(Side side) {
      * precalculating things, etc.) However, remember that you will only have
      * 30 seconds.
      */
+     this->side = side;
+     board = new Board();  
 }
 
 /*
  * Destructor for the player.
  */
 Player::~Player() {
+	delete board;
 }
 
 /*
@@ -44,5 +50,29 @@ Move *Player::doMove(Move *opponentsMove, int msLeft) {
      * TODO: Implement how moves your AI should play here. You should first
      * process the opponent's opponents move before calculating your own move
      */ 
-    return NULL;
+     //does opponent's move
+     if (opponentsMove != NULL){
+		 board->doMove(opponentsMove, (side == BLACK ? WHITE : BLACK));
+	 }
+     // if there are no available moves
+     if (!board->hasMoves(side)){
+		 return NULL;
+	 }
+	 std::vector<int> moves;
+	 for (int i = 0; i < 8; i ++){
+		 for (int j = 0; j < 8; j ++){
+			 //if (board->occupied(i, j)){
+			 //	   continue;
+			 //}
+			 Move * move = new Move(i, j);
+			 if (board->checkMove(move, side)){
+				 moves.push_back(8*i + j);
+			 }
+		 //delete move;
+		 }
+	 } 
+	 int move = moves[rand() % moves.size()];
+	 Move * output_move = new Move(move / 8, move % 8);
+	 return output_move;	 
+			  
 }
