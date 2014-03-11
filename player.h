@@ -18,6 +18,7 @@ public:
     bool testingMinimax;
     Board *board;
     Side side;
+    int value(int move); 
 };
 
 #endif

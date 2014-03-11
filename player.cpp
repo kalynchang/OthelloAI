@@ -70,13 +70,43 @@ Move *Player::doMove(Move *opponentsMove, int msLeft) {
 		 //delete move;
 		 }
 	 } 
-	 int value = board->count(side) - board->count((side == BLACK ? WHITE : BLACK));
-	 if 
+	 //randomly playing moves 
+	 //int move = moves[rand() % moves.size()];
+	 //Move * output_move = new Move(move / 8, move % 8);
+	 //return output_move;
 	 
-	 
-	 int move = moves[rand() % moves.size()];
-	 Move * output_move = new Move(move / 8, move % 8);
-	 //return output_move;	 
-	 board->doMove(output_move, side);
-	 return output_move;
+	 //playing moves using heuristic 
+	 int final_move;
+	 for(unsigned int i = 0; i != moves.size(); i++) {
+		 int value_move = -300;
+		 if (value(moves[i]) > value_move){
+			 value_move = value(moves[i]);
+			 final_move = moves[i];
+		 }
+	 }	 
+	 Move * final = new Move(final_move / 8, final_move % 8);	 
+	 board->doMove(final, side);
+	 return final;
+}
+
+int Player::value(int move) {
+	int value = board->count(side) - board->count((side == BLACK ? WHITE : BLACK));
+	//assigning higher value to corner pieces
+	if (move == 0 || move == 63 || move == 56 || move == 7) {
+		value *= 3;
+	}
+	//assigning lower value to pieces adjacent to corner
+	else if (move == 9 || move == 8 || move == 1 || move == 6 || move == 14 || move == 15){
+		value *= -3;
+	}
+	else if (move == 54 || move == 55 || move == 62 || move == 48 || move == 49 || move == 57){
+		value *= -3;
+	}
+	//else if (move == 2 || move == 3 || move == 4 || move == 5 || move == 16 || move == 24 || move == 32 || move == 40){
+	//	value *= 1.5;
+	//}
+	//else if (move == 23 || move == 31 || move == 39 || move == 47 || move == 58 || move == 59 || move == 60 || move == 61){
+	//	value *= 1.5;
+	//}
+	return value;
 }
