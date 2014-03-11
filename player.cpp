@@ -90,6 +90,7 @@ Move *Player::doMove(Move *opponentsMove, int msLeft) {
 }
 
 int Player::value(int move) {
+	Board * board = this->board->copy();
 	int value = board->count(side) - board->count((side == BLACK ? WHITE : BLACK));
 	//assigning higher value to corner pieces
 	if (move == 0 || move == 63 || move == 56 || move == 7) {
@@ -108,5 +109,6 @@ int Player::value(int move) {
 	//else if (move == 23 || move == 31 || move == 39 || move == 47 || move == 58 || move == 59 || move == 60 || move == 61){
 	//	value *= 1.5;
 	//}
+	delete board;
 	return value;
 }
