@@ -11,6 +11,7 @@ using namespace std;
 struct node{
 	Board* board;
 	Move* move;
+        int score;
 	std::vector<node*> children;
 	node* parent;
 	node(Board* b, Move* m) {

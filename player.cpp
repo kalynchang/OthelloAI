@@ -42,6 +42,7 @@ void Player::populate(node* tree, Side side, int depth){
 			 if (board->checkMove(move, side)){
 				 Board * board2 = board->copy();
 				 node *new_node = new node(board2, move);
+				 //new_node->score = value(move); 
 				 populate(new_node, (side == BLACK ? WHITE : BLACK), depth-1);
 				 tree->add_child(new_node);
 			 }
