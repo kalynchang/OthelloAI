@@ -25,6 +25,29 @@ Player::Player(Side side) {
      board = new Board();  
 }
 
+
+
+void Player::populate(node* tree, Side side, int depth){
+	 //what are all moves this side can do
+	 //for each of those boards, what are all moves other side can do
+	 if (depth == 0) {
+		 return;
+	 }
+	 for (int i = 0; i < 8; i ++){
+		 for (int j = 0; j < 8; j ++){
+			 //if (board->occupied(i, j)){
+			 //	   continue;
+			 //}
+			 Move * move = new Move(i, j);
+			 if (board->checkMove(move, side)){
+				 Board * board2 = board->copy();
+				 node *new_node = new node(board2, move);
+				 populate(new_node, (side == BLACK ? WHITE : BLACK), depth-1);
+				 tree->add_child(new_node);
+			 }
+		 }
+	 }
+}
 /*
  * Destructor for the player.
  */
