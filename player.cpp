@@ -81,6 +81,43 @@ Move *Player::doMove(Move *opponentsMove, int msLeft) {
      if (!board->hasMoves(side)){
 		 return NULL;
 	 }
+	 populate(tree, side3, 4);
+	 list1;
+	 list2;
+	 list3;
+	 list4;
+	 int low3 = 1000000;
+	 int low1 = 1000000000;
+	 int high2 = -1000000;
+	 int high = -1000000;
+	 for (int i; i < list4.size(); i++){
+		 list4[i]->score = value(list4[i]->move);
+	 }
+	 for (int i; i < list3.size(); i++){
+		 if (list3[i]->children->score < low3){
+			 low3 = list3[i]->children->score;
+			 list3[i]->score = low3; 
+		 }
+	 }
+	 for (int i; i < list2.size(); i++){
+		 if (list2[i]->children->score > high2){
+			 high2 = list2[i]->children->score;
+			 list2[i]->score = high2;
+		 }
+	 }
+	 for (int i; i < list1.size(); i++){
+		 if (list1[i]->children->score < low1){
+			 low1 = list1[i]->children->score;
+			 list1[i]->score = low1;
+		 }
+	 }
+	  for (int i; i < list1.size(); i++){
+		  if (list1[i]->score > high){
+			  high = list1[i]->score;
+			  int final_move = list1[i]->move;
+		  }
+	  }	 
+	 /*
 	 std::vector<int> moves;
 	 for (int i = 0; i < 8; i ++){
 		 for (int j = 0; j < 8; j ++){
@@ -94,12 +131,14 @@ Move *Player::doMove(Move *opponentsMove, int msLeft) {
 		 //delete move;
 		 }
 	 } 
+	 */
 	 //randomly playing moves 
 	 //int move = moves[rand() % moves.size()];
 	 //Move * output_move = new Move(move / 8, move % 8);
 	 //return output_move;
 	 
 	 //playing moves using heuristic 
+	 /*
 	 int final_move;
 	 for(unsigned int i = 0; i != moves.size(); i++) {
 		 int value_move = -300;
@@ -107,7 +146,8 @@ Move *Player::doMove(Move *opponentsMove, int msLeft) {
 			 value_move = value(moves[i]);
 			 final_move = moves[i];
 		 }
-	 }	 
+	 }	
+	 */ 
 	 Move * final = new Move(final_move / 8, final_move % 8);	 
 	 board->doMove(final, side);
 	 return final;
