@@ -73,7 +73,7 @@ Move *Player::doMove(Move *opponentsMove, int msLeft) {
      * TODO: Implement how moves your AI should play here. You should first
      * process the opponent's opponents move before calculating your own move
      */ 
-     //does opponent's move
+     //does opponent's 	move
      if (opponentsMove != NULL){
 		 board->doMove(opponentsMove, (side == BLACK ? WHITE : BLACK));
 	 }
@@ -81,40 +81,58 @@ Move *Player::doMove(Move *opponentsMove, int msLeft) {
      if (!board->hasMoves(side)){
 		 return NULL;
 	 }
-	 populate(tree, side3, 4);
-	 list1;
-	 list2;
-	 list3;
-	 list4;
+	 node* tree = new node(board, opponentsMove);
+	 populate(tree, side, 4);
+	 std::vector<node *> list1, list2, list3, list4;
+	 list1 = tree->children;
+	 for (unsigned int i = 0; i <list1.size(); i++){
+		 list2.insert(list2.end(), list1[i]->children.begin(), list1[i]->children.end());
+	 }
+	 for (unsigned int i = 0; i <list2.size(); i++){
+		 list3.insert(list3.end(), list2[i]->children.begin(), list2[i]->children.end());
+	 }
+	 for (unsigned int i = 0; i < list3.size(); i++){
+		 list4.insert(list4.end(), list3[i]->children.begin(), list3[i]->children.end());
+	 }
 	 int low3 = 1000000;
 	 int low1 = 1000000000;
 	 int high2 = -1000000;
 	 int high = -1000000;
-	 for (int i; i < list4.size(); i++){
-		 list4[i]->score = value(list4[i]->move);
+	 for (unsigned int i = 0; i < list4.size(); i++){
+		 Move* x = list4[i]->move;
+		 list4[i]->score = value(8*(x->getX()) + x->getY());
 	 }
-	 for (int i; i < list3.size(); i++){
-		 if (list3[i]->children->score < low3){
-			 low3 = list3[i]->children->score;
-			 list3[i]->score = low3; 
+	 for (unsigned int i = 0; i < list3.size(); i++){
+		 // for child in children of list3[i]:
+		 // if child is the lowest score, set list3[i]'s score as child's score.
+		 list3[i]->score = low3;
+		 for (unsigned int child = 0; child < list3[i]->children.size(); child ++){
+			 if (list3[i]->children[child]->score < list3[i]->score){
+				list3[i]->score = list3[i]->children[child]->score;
+			}
 		 }
 	 }
-	 for (int i; i < list2.size(); i++){
-		 if (list2[i]->children->score > high2){
-			 high2 = list2[i]->children->score;
-			 list2[i]->score = high2;
+	 for (unsigned int i = 0; i < list2.size(); i++){
+		 list2[i]->score = high2;
+		 for (unsigned int j = 0; j < list2[i]->children.size(); j++){
+			 if (list2[i]->children[j]->score > list2[i]->score){
+				list2[i]->score = list2[i]->children[j]->score;
+			}
 		 }
 	 }
-	 for (int i; i < list1.size(); i++){
-		 if (list1[i]->children->score < low1){
-			 low1 = list1[i]->children->score;
-			 list1[i]->score = low1;
+	 for (unsigned int i = 0; i < list1.size(); i++){
+		 list1[i]->score = low1;
+		 for (unsigned int j = 0; j < list1[i]->children.size(); j++){
+			 if (list1[i]->children[j]->score < list1[i]->score){
+				list1[i]->score = list1[i]->children[j]->score;
+			}
 		 }
 	 }
-	  for (int i; i < list1.size(); i++){
+	 Move* final_move;
+	  for (unsigned int i = 0; i < list1.size(); i++){
 		  if (list1[i]->score > high){
 			  high = list1[i]->score;
-			  int final_move = list1[i]->move;
+			  final_move = list1[i]->move;
 		  }
 	  }	 
 	 /*
@@ -147,10 +165,10 @@ Move *Player::doMove(Move *opponentsMove, int msLeft) {
 			 final_move = moves[i];
 		 }
 	 }	
-	 */ 
-	 Move * final = new Move(final_move / 8, final_move % 8);	 
-	 board->doMove(final, side);
-	 return final;
+	 */ 	 
+	 std::cerr << final_move->getX() << " " << final_move->getY() << std::endl;
+	 board->doMove(final_move, side);
+	 return final_move;
 }
 
 int Player::value(int move) {

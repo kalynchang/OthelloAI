@@ -1,5 +1,5 @@
 CC          = g++
-CFLAGS      = -Wall -ansi -pedantic -ggdb
+CFLAGS      = -Wall -ansi -pedantic -03
 OBJS        = player.o board.o
 PLAYERNAME  = teamnoodles
 
